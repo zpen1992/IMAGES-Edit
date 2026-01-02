@@ -1,0 +1,19 @@
+
+{
+  "name": "movie-wall-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A high-performance 3D movie poster wall generator compatible with Vercel deployment.",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build step required for ESM deployment'"
+  },
+  "keywords": [
+    "vercel",
+    "react",
+    "poster-wall",
+    "esm"
+  ],
+  "author": "Senior Frontend Engineer",
+  "license": "MIT"
+}
