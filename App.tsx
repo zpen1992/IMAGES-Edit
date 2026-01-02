@@ -38,14 +38,14 @@ const ControlItem: React.FC<{
 }> = ({ label, min, max, step = 1, value, theme, onChange }) => (
   <div className="flex flex-col gap-2 mb-6">
     <div className="flex justify-between items-center px-0.5">
-      <label className={`text-[12px] font-bold tracking-tight ${theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'}`}>{label}</label>
+      <label className={`text-[12px] font-bold tracking-tight ${theme === 'dark' ? 'text-neutral-200' : 'text-neutral-600'}`}>{label}</label>
       <input 
         type="number" 
         value={value} 
         onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
         className={`w-16 border rounded px-1.5 py-0.5 text-[11px] font-mono text-right focus:outline-none focus:ring-1 ${
           theme === 'dark' 
-            ? 'bg-neutral-800 border-neutral-700 text-white focus:ring-neutral-600' 
+            ? 'bg-neutral-800 border-neutral-700 text-white focus:ring-neutral-500' 
             : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:ring-black'
         }`}
       />
@@ -79,21 +79,22 @@ const Sidebar: React.FC<{
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const bgClass = theme === 'dark' ? 'bg-black border-neutral-800' : 'bg-white border-neutral-100';
+  const bgClass = theme === 'dark' ? 'bg-neutral-950 border-neutral-800' : 'bg-white border-neutral-100';
   const textClass = theme === 'dark' ? 'text-white' : 'text-black';
+  const subTitleClass = theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500';
 
   return (
     <div className={`fixed top-0 left-0 h-screen w-80 border-r shadow-2xl z-50 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) ${isOpen ? 'translate-x-0' : '-translate-x-full'} ${bgClass} ${textClass} p-6 flex flex-col overflow-y-auto`}>
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-lg font-black tracking-tighter uppercase">Settings</h1>
         <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-neutral-500/10 rounded-full transition-colors">
-          <svg className="w-5 h-5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <svg className={`w-5 h-5 ${theme === 'dark' ? 'text-neutral-300' : 'text-neutral-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
       </div>
 
       <div className="space-y-6">
         <section>
-          <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-4">Canvas / 画布</h2>
+          <h2 className={`text-[10px] font-bold uppercase tracking-widest mb-4 ${subTitleClass}`}>Canvas / 画布</h2>
           <div className="grid grid-cols-2 gap-3">
             <div className={`${theme === 'dark' ? 'bg-neutral-900' : 'bg-neutral-50'} p-3 rounded-xl border ${theme === 'dark' ? 'border-neutral-800' : 'border-neutral-100'}`}>
               <label className="text-[9px] text-neutral-500 block mb-1 uppercase">Width</label>
@@ -107,7 +108,7 @@ const Sidebar: React.FC<{
         </section>
 
         <section className="py-6 border-y border-neutral-500/10">
-          <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-4">Fitting / 填充</h2>
+          <h2 className={`text-[10px] font-bold uppercase tracking-widest mb-4 ${subTitleClass}`}>Fitting / 填充</h2>
           <div className="flex p-1 bg-neutral-500/5 rounded-xl gap-1">
             {[{ id: 'cover', label: '裁剪' }, { id: 'stretch', label: '拉伸' }, { id: 'contain', label: '比例' }].map((mode) => (
               <button
@@ -126,14 +127,14 @@ const Sidebar: React.FC<{
         </section>
 
         <section className="pb-6 border-b border-neutral-500/10">
-          <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-4">Grid / 阵列</h2>
+          <h2 className={`text-[10px] font-bold uppercase tracking-widest mb-4 ${subTitleClass}`}>Grid / 阵列</h2>
           <ControlItem label="行数" min={1} max={30} value={settings.rows} theme={theme} onChange={(v) => handleChange('rows', v)} />
           <ControlItem label="列数" min={1} max={30} value={settings.cols} theme={theme} onChange={(v) => handleChange('cols', v)} />
           <ControlItem label="间距" min={0} max={200} value={settings.gap} theme={theme} onChange={(v) => handleChange('gap', v)} />
         </section>
 
         <section>
-          <h2 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-4">Transform / 变换</h2>
+          <h2 className={`text-[10px] font-bold uppercase tracking-widest mb-4 ${subTitleClass}`}>Transform / 变换</h2>
           <ControlItem label="倾斜角度" min={-180} max={180} value={settings.angle} theme={theme} onChange={(v) => handleChange('angle', v)} />
           <ControlItem label="纵向比例" min={0.1} max={2} step={0.01} value={settings.scaleY} theme={theme} onChange={(v) => handleChange('scaleY', v)} />
           <ControlItem label="纵深扭曲" min={-1} max={1} step={0.01} value={settings.skew} theme={theme} onChange={(v) => handleChange('skew', v)} />
@@ -152,7 +153,7 @@ const Sidebar: React.FC<{
           {isGenerating ? '正在导出...' : '导出图片'}
         </button>
         <div className="grid grid-cols-2 gap-2">
-            <button onClick={onReset} className={`py-2 rounded-xl text-[11px] font-medium transition-colors ${theme === 'dark' ? 'bg-neutral-900 text-neutral-400 hover:text-white' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}>还原</button>
+            <button onClick={onReset} className={`py-2 rounded-xl text-[11px] font-medium transition-colors ${theme === 'dark' ? 'bg-neutral-900 text-neutral-300 hover:text-white' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}>还原</button>
             <button onClick={onClear} className={`py-2 rounded-xl text-[11px] font-medium transition-colors ${theme === 'dark' ? 'bg-neutral-900 text-neutral-500 hover:text-red-500' : 'bg-neutral-50 text-neutral-400 hover:text-red-600'}`}>清空</button>
         </div>
       </div>
