@@ -167,21 +167,20 @@ const ImageUploader: React.FC<{
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dirInputRef = useRef<HTMLInputElement>(null);
 
+  const btnPrimary = theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white';
+  const btnSecondary = theme === 'dark' ? 'border-white text-white' : 'border-black text-black';
+
   return (
-    <div className="max-w-md mx-auto w-full z-20 flex flex-col gap-4">
+    <div className="max-w-xs mx-auto w-full z-20 flex flex-col gap-6">
       <button 
         onClick={() => fileInputRef.current?.click()}
-        className={`w-full py-6 rounded-2xl text-[18px] font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 ${
-            theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
-        }`}
+        className={`w-full py-5 rounded-2xl text-[18px] font-bold transition-all active:scale-95 flex items-center justify-center ${btnPrimary}`}
       >
         开始上传
       </button>
       <button 
         onClick={() => dirInputRef.current?.click()}
-        className={`w-full py-6 rounded-2xl text-[18px] font-bold transition-all hover:scale-[1.02] active:scale-95 border flex items-center justify-center gap-2 ${
-            theme === 'dark' ? 'bg-transparent border-white/20 text-white hover:bg-white/5' : 'bg-transparent border-black/10 text-black hover:bg-black/5'
-        }`}
+        className={`w-full py-5 rounded-2xl text-[18px] font-bold transition-all active:scale-95 border-2 flex items-center justify-center ${btnSecondary}`}
       >
         导入目录
       </button>
@@ -307,7 +306,7 @@ const PreviewCanvas: React.FC<{
 
   return (
     <div className={`flex-1 flex items-center justify-center p-8 transition-all duration-500 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
-      <div className={`relative transition-all duration-500 overflow-hidden border ${theme === 'dark' ? 'border-neutral-900 shadow-2xl' : 'border-neutral-100 shadow-xl'}`}>
+      <div className={`relative transition-all duration-500 overflow-hidden border ${theme === 'dark' ? 'border-neutral-900' : 'border-neutral-100'}`}>
         <canvas 
           ref={canvasRef} 
           width={settings.width} 
@@ -386,26 +385,16 @@ export default function App() {
         {images.length > 0 ? (
           <PreviewCanvas settings={settings} images={images} canvasRef={canvasRef} theme={theme} isSidebarOpen={isSidebarOpen} />
         ) : (
-          <div className="flex-1 flex items-center justify-center relative overflow-hidden">
-            {/* 动态占位卡片墙 */}
-            <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center pointer-events-none opacity-20">
-                <div className="grid grid-cols-5 md:grid-cols-8 gap-8 rotate-[-15deg] scale-150">
-                    {[...Array(48)].map((_, i) => (
-                        <div key={i} className="w-32 h-48 md:w-44 md:h-64 netflix-card-placeholder rounded-lg" />
-                    ))}
-                </div>
-            </div>
-            
+          <div className={`flex-1 flex items-center justify-center relative overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
             <ImageUploader onImagesAdded={handleImagesAdded} theme={theme} />
           </div>
         )}
 
-        {/* 底部浮动工具 */}
         <div className="fixed right-8 bottom-8 flex flex-col gap-4 z-40 items-center">
             {images.length > 0 && !isSidebarOpen && (
                 <button 
                   onClick={() => setIsSidebarOpen(true)} 
-                  className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 border ${theme === 'dark' ? 'bg-neutral-900 text-white border-neutral-800' : 'bg-white text-black border-neutral-200'}`} 
+                  className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border ${theme === 'dark' ? 'bg-neutral-900 text-white border-neutral-800' : 'bg-white text-black border-neutral-200 shadow-sm'}`} 
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
                 </button>
@@ -413,7 +402,7 @@ export default function App() {
 
             <button 
               onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} 
-              className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 border ${theme === 'dark' ? 'bg-white text-black border-neutral-200' : 'bg-black text-white border-neutral-800'}`}
+              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border ${theme === 'dark' ? 'bg-white text-black border-neutral-200' : 'bg-black text-white border-neutral-800'}`}
             >
                 {theme === 'dark' ? (
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" /></svg>
@@ -425,7 +414,7 @@ export default function App() {
             {images.length > 0 && (
                 <button 
                   onClick={() => appendFileRef.current?.click()} 
-                  className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 border ${theme === 'dark' ? 'bg-white text-black border-neutral-200' : 'bg-black text-white border-neutral-800'}`} 
+                  className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border ${theme === 'dark' ? 'bg-white text-black border-neutral-200' : 'bg-black text-white border-neutral-800'}`} 
                 >
                     <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" /></svg>
                     <input ref={appendFileRef} type="file" multiple accept="image/*" className="hidden" onChange={(e) => e.target.files && handleImagesAdded(e.target.files)} />
