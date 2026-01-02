@@ -2,11 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
 export const getCollectionTheme = async (imageCount: number) => {
-  // Use API key exclusively from process.env.API_KEY.
-  if (!process.env.API_KEY) return { title: "我的电影收藏", vibe: "一段充满回忆的光影之旅。" };
+  // 安全地获取 API Key，避免 process 未定义的错误
+  const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : '';
+  
+  if (!apiKey) return { title: "我的电影收藏", vibe: "一段充满回忆的光影之旅。" };
 
-  // Create a new GoogleGenAI instance right before making an API call.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey });
 
   try {
     const response = await ai.models.generateContent({
@@ -25,8 +26,7 @@ export const getCollectionTheme = async (imageCount: number) => {
       }
     });
 
-    // Access the .text property directly (it's a property, not a method).
-    const jsonStr = response.text.trim();
+    const jsonStr = response.text?.trim() || "{}";
     const data = JSON.parse(jsonStr);
     return data;
   } catch (error) {
