@@ -194,7 +194,7 @@ const ImageUploader: React.FC<{
 const PreviewCanvas: React.FC<{
   settings: WallSettings;
   images: PosterImage[];
-  canvasRef: React.RefObject<HTMLCanvasElement>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
   theme: 'dark' | 'light';
   isSidebarOpen: boolean;
 }> = ({ settings, images, canvasRef, theme, isSidebarOpen }) => {

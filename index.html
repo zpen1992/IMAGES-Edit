@@ -9,8 +9,8 @@
     <title>海报墙生成器</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
     <script>
-        // Pre-runtime shim to prevent crashes if code accesses process.env before Vite shims it
-        window.process = window.process || { env: {} };
+        // 兼容脚本：防止环境报错
+        window.process = window.process || { env: { API_KEY: "" } };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
